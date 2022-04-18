@@ -1,0 +1,54 @@
+{include:common_header}
+<div class="container">
+    {include: common_nav}
+    <br>
+    <h3 style="text-align: center">我的积分明细列表</h3>
+    <br>
+    {for:total_num}
+    <table class="table table-bordered" style="text-align: center">
+        <tr>
+            <td>编号</td>
+            <td>{{i + 1}}</td>
+        </tr>
+        <tr>
+            <td>领取时间</td>
+            <td>{{detail_list[$i]['get_time']}}</td>
+        </tr>
+        <tr>
+            <td>对手信息</td>
+            <td>{{detail_list[$i]['target_name']}}&nbsp;({{detail_list[$i]['target_id']}}&nbsp;号)</td>
+        </tr>
+        <tr>
+            <td>奖励积分</td>
+            <td>+&nbsp;{{detail_list[$i]['get_score']}}</td>
+        </tr>
+        <tr>
+            <td>累计积分</td>
+            <td>{{detail_list[$i]['rest_score']}}</td>
+        </tr>
+        <tr>
+            <td>赛前我的排名</td>
+            <td>
+                {if:$detail_list[$i]['master_ranknum'] > $max_rankNum[$sex]}
+                暂未上榜
+                {else}
+                第{{detail_list[$i]['master_ranknum']}}名
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td>赛前对手排名</td>
+            <td>
+                {if:$detail_list[$i]['target_ranknum'] > $max_rankNum[$sex]}
+                暂未上榜
+                {else}
+                第{{detail_list[$i]['target_ranknum']}}名
+                {endif}
+            </td>
+        </tr>
+    </table>
+    <br><br>
+    {endfor}
+</div>
+{include:common_component}
+{include:common_footer}

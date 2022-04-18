@@ -1,0 +1,36 @@
+{include:common_header}
+<div class="container">
+    {include:common_nav}
+    <h3 style="text-align: center;margin-top: 10px">航空港全校实时榜单</h3>
+
+    <ul class="nav nav-tabs">
+        {for:groups_count}
+        <li class="nav-item">
+            <a class="nav-link {if:$query_group_id == $groups_info[$i]['group_id']}active{else}{endif}" href="/total/rank/{{groups_info[$i]['group_id']}}">{{groups_info[$i]['group_name']}}</a>
+        </li>
+        {endfor}
+    </ul>
+
+    <br>
+    <h3 style="text-align: center">{if: $query_group_id == 1} 男子组 {else} 女子组 {endif}</h3>
+    <table class="table table-bordered" style="text-align: center">
+        <thead>
+            <th>排名</th>
+            <th>姓名</th>
+            <th>当前积分</th>
+            <th>选手编号</th>
+        </thead>
+        <tbody>
+            {for:count_rank_list}
+            <tr {if:$rank_list[$i]['user_id'] == $user_id}style="color:red"{else}{endif}>
+                <td>{{rank_list[$i]['rank_num']}}</td>
+                <td>{{rank_list[$i]['username']}}</td>
+                <td>{{rank_list[$i]['score']}}</td>
+                <td>{{rank_list[$i]['user_id']}}</td>
+            </tr>
+            {endfor}
+        </tbody>
+    </table>
+
+</div>
+{include:common_footer}

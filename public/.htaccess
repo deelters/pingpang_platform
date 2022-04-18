@@ -1,0 +1,13 @@
+RewriteEngine On
+Options -Indexes
+RewriteRule ^([a-zA-Z0-9/]*)$ ./index.php?/$1 [NC]
+#ErrorDocument 404 <script>window.location="http://%{HTTP_HOST}/notfound"</script>
+#ErrorDocument 403 <script>window.location="http://%{HTTP_HOST}/notfound"</script>
+ErrorDocument 404 /notfound
+ErrorDocument 403 /notfound
+
+#Ä¬ÈÏÍ¼Æ¬È±Ê§ÏÔÊ¾µÄÍ¼Æ¬
+RewriteCond %{REQUEST_URI} .(jpg|jpeg|gif|png|ico)$ [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule .*$ /error.jpg [L]

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>比赛分组信息管理</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+
+<div>
+    <div class="row" style="width: 15%;height: 100%;margin-left: 5px;position: absolute;background-color: #f7f7f7;float: left">
+        <div class="span2">
+            <h3 style="color: black;text-align: center;margin-bottom: 30px;margin-top: 30px">比赛管理平台</h3>
+            <hr style="background-color: black">
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active" data-href="tables"><a href="#">台桌管理</a></li>
+                <li data-href="info"><a href="#">比赛概况</a></li>
+                <li data-href="persons"><a href="#">人员分配</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <iframe id="iframe" src="start.php?p=tables" style="float: left;width: 84%;position: absolute;margin-left: 16%;height: 100%;border: none"></iframe>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</body>
+
+<script>
+    $('li').click(function () {
+        $('li').each(function () {
+            $(this).attr("class", "");
+        });
+        $(this).attr("class", "active");
+        var href_name = $(this).data("href");
+        $('#iframe').attr("src", "start.php?p=" + href_name);
+    });
+</script>
+</html>

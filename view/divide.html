@@ -1,0 +1,28 @@
+{include:common_header}
+<div class="container">
+    {include:common_nav}
+    <br>
+    {if: !$is_show}
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+            <h4 style="text-align: center">系统尚未分配您的比赛，请耐心等待！</h4>
+      </div>
+    </div>
+    {else}
+        <h3 style="text-align: center">我的比赛分组</h3>
+        <br>
+        <table class="table table-bordered" style="text-align: center">
+            <tr>
+                <td>比赛球桌号</td>
+                <td>对手编号</td>
+                <td>对手姓名</td>
+            </tr>
+            <tr>
+                <td>{{table_id}}</td>
+                <td>{{another_id}}</td>
+                <td>{{another_name}}</td>
+            </tr>
+        </table>
+    {endif}
+</div>
+{include:common_footer}

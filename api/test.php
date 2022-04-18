@@ -1,0 +1,27 @@
+<?php
+//    echo Tool::getWeekEndTimeStamp();
+//    $User = new user();
+////    echo $User->getUserNowRankNum(1);
+//    var_dump($User->getUserRestTimes(1));
+//    echo "<br>";
+//    var_dump($User->HasUnfinishedTask(1));
+//    echo '<br>';
+//    var_dump($User->MakeChallenge(1, 2));
+//    echo '<br>';
+//    var_dump($User->getUserTaskInfo(1));
+//    echo '<br>';
+//    var_dump(Tool::CreateTaskCheckCode());
+//    $Mail = new Email();
+//    $now_time = date('Y-m-d H:i:s', time());
+//    Tool::sendResponseJson($Mail->sendMail('523340889@qq.com', "这是一个测试<br>{$now_time}"));
+//$redis_pool = new Redis_pool();
+//$redis = $redis_pool->getRedis();
+//$redis = new Redis_query();
+//var_dump($redis -> testFunc());
+$user = new user();
+$res = $user->getUserScoreInfoBySex(SexType::MAN);
+$redis_query = new Redis_query();
+//$redis_query->setUserScoreInfo($res, SEX_TYPE::MAN);
+//$sex = $redis_query->getUserScoreInfoByUserId(261);
+$data = $redis_query->updateRankNum();
+var_dump($data);

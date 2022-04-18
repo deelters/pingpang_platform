@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>球桌管理</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        .action-btn{
+            margin-right: 20px;
+        }
+
+        html{
+            zoom: 1.1;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <ul id="myTab" class="nav nav-tabs">
+            <li class="active">
+                <a href= "#man_group" data-toggle="tab">男生分组</a>
+            </li>
+            <li>
+                <a href= "#woman_group" data-toggle="tab">女生分组</a>
+            </li>
+    </ul>
+
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="man_group">
+             <h3 style="text-align: center">男子组选手列表</h3>
+            <p>当前轮空：<span v-for="item in man_lunkong">{{item}}&nbsp;&nbsp;&nbsp;</span></p>
+            <button @click="submitInfo(1)" class="btn btn-info" style="margin-bottom: 20px">开始分组</button>
+            <button @click="deleteInfo(1)" class="btn btn-danger" style="float: right">删除男生分组信息（包括上轮轮空信息）</button>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>
+                      <input @change="manAllSelected" id="man-all-select" type="checkbox">&nbsp;选择
+                  </th>
+                  <th>选手编号</th>
+                  <th>姓名</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="person in man_list">
+                    <td>
+                        <input class="man_box" type="checkbox" name="man[]" :value="person['user_id']">
+                    </td>
+                    <td>{{person['user_id']}}</td>
+                    <td>{{person['username']}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+        </div>
+
+        <div class="tab-pane fade in" id="woman_group">
+            <!--女子组选手列表-->
+            <h3 style="text-align: center">女子组选手列表</h3>
+            <p>当前轮空：<span v-for="item in woman_lunkong">{{item}}&nbsp;&nbsp;&nbsp;</span></p>
+            <button @click="submitInfo(0)" class="btn btn-info" style="margin-bottom: 20px">开始分组</button>
+            <button @click="deleteInfo(0)" class="btn btn-danger" style="float: right">删除女生分组信息（包括上轮轮空信息）</button>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>
+                      <input @change="womanAllSelected" id="woman-all-select" type="checkbox">&nbsp;选择
+                  </th>
+                  <th>选手编号</th>
+                  <th>姓名</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="person in woman_list">
+                    <td>
+                        <input class="woman_box" type="checkbox" name="woman[]" :value="person['user_id']">
+                    </td>
+                    <td>{{person['user_id']}}</td>
+                    <td>{{person['username']}}</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            man_select_list: [],
+            woman_select_list: [],
+            man_list: [],
+            woman_list:[],
+            man_lunkong: [],
+            woman_lunkong: []
+        },
+        methods: {
+            //获取台桌比赛信息
+            getUsers: function (){
+                let that = this;
+                axios.get("/start/getAllusers.php")
+                            .then(function (response){
+                                that.man_list = response.data.man;
+                                that.woman_list = response.data.woman;
+                            })
+            },
+            //男子组全选
+            manAllSelected: function (){
+                if($('#man-all-select').is(':checked')) {
+                    $(".man_box").prop("checked",true)
+                }
+                else{
+                    $(".man_box").prop("checked",false)
+                }
+            },
+            //女子组全选
+            womanAllSelected: function (){
+                if($('#woman-all-select').is(':checked')) {
+                    $(".woman_box").prop("checked",true)
+                }
+                else{
+                    $(".woman_box").prop("checked",false)
+                }
+            },
+            getLunkong: function (){
+                let that = this;
+                axios.get("/start/lunkong.php")
+                    .then(function (response){
+                        that.man_lunkong = response.data.man;
+                        that.woman_lunkong = response.data.woman;
+                    })
+            }
+            ,
+            //提交比赛信息
+            submitInfo: function (sex){
+                if (!confirm("是否确认进行分组？")){
+                    return;
+                }
+
+                let submit_data;
+                let that = this;
+                this.woman_select_list = [];
+                this.man_select_list = [];
+                if (sex === 0){
+                    $('.woman_box').each(function (){
+                       if ($(this).is(':checked')){
+                           that.woman_select_list.push($(this).val());
+                       }
+                    });
+                    submit_data = this.woman_select_list
+                }
+                else {
+                    $('.man_box').each(function (){
+                       if ($(this).is(':checked')){
+                           that.man_select_list.push($(this).val());
+                       }
+                    });
+                    submit_data = this.man_select_list;
+                }
+
+                axios.post("/start/divideGroups.php", data = {
+                    user_ids: submit_data,
+                    sex: sex
+                })
+                    .then(function (response){
+                        console.log(response.data);
+                        alert(response.data.msg);
+                        window.location.reload();
+                    })
+            },
+            deleteInfo: function (sex){
+                if(!confirm("是否确认删除当前分组信息?(删除后无法找回)")){
+                    return;
+                }
+                axios.post("/start/delete_div.php", data = {sex: sex})
+                    .then(function (response){
+                        alert(response.data.msg);
+                        window.location.reload();
+                    })
+            }
+        }
+    })
+
+    vm.getUsers();
+    vm.getLunkong();
+</script>
+
+</html>
